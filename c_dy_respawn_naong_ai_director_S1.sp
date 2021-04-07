@@ -1655,7 +1655,7 @@ public Action:Timer_MapStart(Handle:Timer)
 	g_checkStaticAmtCntr = GetConVarInt(sm_respawn_check_static_enemy_counter);
 	//Temp testing
 	g_checkStaticAmtAway = 30;
-	g_checkStaticAmtCntrAway = 12;
+	g_checkStaticAmtCntrAway = 13;
 	//Elite Bot cvar multipliers (used to minus off top of original cvars)
 	g_bot_attack_aimtolerance_newthreat_amt_mult = 0.8;
 	g_bot_attack_aimpenalty_amt_close_mult = 15;
@@ -2652,7 +2652,7 @@ public Action:Timer_CheckEnemyAway(Handle:Timer)
 					}
 				}
 			}
-			g_checkStaticAmtCntrAway = 12;
+			g_checkStaticAmtCntrAway = 13;
 		}
 	}
 	else
