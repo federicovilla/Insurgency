@@ -1210,6 +1210,10 @@ public Public_Prop_Menu_Handler(Handle:menu, MenuAction:action, param1, param2)
 	// Note to self: param1 is client, param2 is choice.
 	if (action == MenuAction_Select)
 	{
+		//char info[32];
+ 
+		/* Get item info */
+		//menu.GetItem(param2, info, sizeof(info))
 		if (param2 == 6)
 		{
 			KillProps(param1);
@@ -1218,9 +1222,22 @@ public Public_Prop_Menu_Handler(Handle:menu, MenuAction:action, param1, param2)
 			 g_ConstructRemainingTime[param1] = g_ConstructDeployTime;
 
 			g_engInMenu[param1] = false;
+			// decl String:textPath[255];
+			// BuildPath(Path_SM, textPath, sizeof(textPath), "configs/om_public_props.txt");
+			// new Handle:kv = CreateKeyValues("Props");
+			// FileToKeyValues(kv, textPath);
+			// om_public_prop_menu = CreateMenu(Public_Prop_Menu_Handler);
+			// SetMenuTitle(om_public_prop_menu, "Construct | Credits: %d", iCredits[param1]);
+			// PopLoop(kv, param1);
+			// DisplayMenu(om_public_prop_menu, param1, MENU_TIME_FOREVER);
 			return Plugin_Stop;
 		}
-				
+		// if (param2 == 6)
+		// {
+		// 	g_engInMenu[param1] = false;
+		// 	return Plugin_Stop;
+		// }
+		
 		decl String:prop_choice[255];
 	
 		GetMenuItem(om_public_prop_menu, param2, prop_choice, sizeof(prop_choice));
@@ -1252,8 +1269,12 @@ public Public_Prop_Menu_Handler(Handle:menu, MenuAction:action, param1, param2)
 				}
 				else
 				{
-					YellOut(param1);
-					SetCooldown(param1);
+					// play sound at the player if RNG passes
+					//new Float:rn = GetRandomFloat(0.0, 1.0);
+					//if (rn <= g_CvarYellChance) {
+						YellOut(param1);
+						SetCooldown(param1);
+					//}
 				}
 				// Get current position
 				decl Float:vecPos[3];
@@ -1265,15 +1286,35 @@ public Public_Prop_Menu_Handler(Handle:menu, MenuAction:action, param1, param2)
 				ConstructTimers[param1] = CreateDataTimer(1.0, Timer_Construct, pack, TIMER_REPEAT);
 				pack.WriteCell(param1);
 				pack.WriteCell(param2);
+				//CreateTimer(1.0, Timer_Construct, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 			}
 			else
 			{
 				PrintToChat(param1, "You do not have enough credits to deploy that!"); 
 				PrintHintText(param1, "You do not have enough credits to deploy that!");
+				// new String:textPath[255];
+				// BuildPath(Path_SM, textPath, sizeof(textPath), "configs/om_public_props.txt");
+				// new Handle:kv = CreateKeyValues("Props");
+				// FileToKeyValues(kv, textPath);
+				// om_public_prop_menu = CreateMenu(Public_Prop_Menu_Handler);
+				// SetMenuTitle(om_public_prop_menu, "Construct | Credits: %d", iCredits[param1]);
+				// PopLoop(kv, param1);
+				// DisplayMenu(om_public_prop_menu, param1, MENU_TIME_FOREVER);
 				g_engInMenu[param1] = false;
 				return Plugin_Stop;
 			}
 		}
+	}
+	if (action == MenuAction_Cancel)
+	{
+		g_engInMenu[param1] = false;
+		/* 
+		if (ConstructTimers[param1] != null)
+		{
+			KillTimer(ConstructTimers[param1]);
+			ConstructTimers[param1] = null;
+		}
+		 */
 	}
 }
 
@@ -1314,7 +1355,6 @@ public PropSpawn(client, param2)
 			}
 			else
 			{
-			
 				ClientCredits = ClientCredits - Price;
 				iCredits[client] = ClientCredits;
 				PrintToChat(client, "You have deployed a \x04%s for \x03%d credits!", prop_choice, Price);
@@ -1327,8 +1367,6 @@ public PropSpawn(client, param2)
 		{
 			PrintToChat(client, "You do not have enough credits to deploy that!");
 			PrintHintText(client, "You do not have enough credits to deploy that!");
-
-
 			return;
 		}
 	}
